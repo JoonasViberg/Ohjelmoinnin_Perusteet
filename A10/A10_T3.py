@@ -70,7 +70,29 @@
 
 import sys
 from typing import List
-import sortLib
+
+# --- START: Content from A10_Tlib.py ---
+def bubbleSort(PValues: List[int], PAsc: bool = True) -> None:
+    n = len(PValues)
+    
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            
+            should_swap = False
+            
+            if PAsc:
+                if PValues[j] > PValues[j + 1]:
+                    should_swap = True
+            else:
+                if PValues[j] < PValues[j + 1]:
+                    should_swap = True
+                    
+            if should_swap:
+                PValues[j], PValues[j + 1] = PValues[j + 1], PValues[j]
+                
+    return None
+# --- END: Content from A10_Tlib.py ---
+
 
 def readFileContent(PFilename: str) -> List[int]:
     data = []
@@ -92,7 +114,6 @@ def readFileContent(PFilename: str) -> List[int]:
     return data
 
 def displayData(PName: str, PFilename: str, PData: List[int]) -> None:
-    # Use the filename obtained either from input or sys.argv[1]
     print(f"{PName} '{PFilename}' -> {', '.join(map(str, PData))}")
 
 def main() -> None:
@@ -108,14 +129,13 @@ def main() -> None:
         filename = input("Insert filename: ")
         
     # Read Values
-    # Read once, create copies for in-place sorting operations
     raw_data = readFileContent(filename)
     
     if not raw_data:
         print("No data loaded. Program ending.")
         sys.exit(0)
         
-    # Create copies for sorting
+    # Create copies for in-place sorting
     data_asc = raw_data[:]
     data_desc = raw_data[:]
     
@@ -123,11 +143,11 @@ def main() -> None:
     displayData("Raw", filename, raw_data)
     
     # 2. Ascending Sort and Display
-    sortLib.bubbleSort(data_asc)
+    bubbleSort(data_asc)
     displayData("Ascending", filename, data_asc)
     
     # 3. Descending Sort and Display
-    sortLib.bubbleSort(data_desc, PAsc=False)
+    bubbleSort(data_desc, PAsc=False)
     displayData("Descending", filename, data_desc)
     
     print("Program ending.")
